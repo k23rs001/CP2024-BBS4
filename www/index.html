@@ -438,6 +438,7 @@ function logout() {
 
 // 認証フォームのクリア
 function clearAuthForm() {
+    $('#name').val('');
     $('#loginEmail').val('');
     $('#loginPassword').val('');
 }
@@ -474,6 +475,7 @@ $(function() {
         loadPosts();
      });
 
+   
     // 文字数カウンターの初期化
     updateCharacterCount('contentInput', 'contentCount', 1000);
 
@@ -481,8 +483,9 @@ $(function() {
     $('#postButton').on('click', function() {
         // 投稿内容をフォームから取得
         const authorVal = $('#authorInput').val();
+      //  const contentVal = $('#username').val();
         const contentVal = $('#contentInput').val();
-        createPost(authorVal, contentVal);
+        createPost(authorVal, username,contentVal);
     });
 
     $('#loginButton').on('click', function() {
@@ -493,8 +496,9 @@ $(function() {
 
     $('#registerButton').on('click', function() {
         const email = $('#loginEmail').val();
+        const uname = $('#name').val();
         const password = $('#loginPassword').val();
-        register(email, password);
+        register(uname,email,password);
     });
 
     $('#logoutButton').on('click', logout);
@@ -524,6 +528,11 @@ window.addEventListener('unload', function() {
 
         <!-- 認証フォーム（未ログイン時表示） -->
         <div class="auth-container logged-out">
+          <!--div class="form-group">
+                <label for="loginEmail">ニックネーム</label>
+                <input type="uname" id="name" 
+                       class="form-control" placeholder="他の利用者も閲覧します">
+            </div-->
             <div class="form-group">
                 <label for="loginEmail">メールアドレス</label>
                 <input type="email" id="loginEmail" 
@@ -549,6 +558,12 @@ window.addEventListener('unload', function() {
 
         <!-- 投稿フォーム（ログイン時表示） -->
         <div class="post-form logged-in">
+            <div class="form-group">
+                <label for="username">ニックネーム</label>
+                <textarea id="username" class="form-control" 
+                          placeholder="ニックネームを入力してください"></textarea>
+                <small class="character-count" id="contentCount">0/50</small>
+            </div>
             <div class="form-group">
                 <label for="contentInput">投稿内容</label>
                 <textarea id="contentInput" class="form-control" 
