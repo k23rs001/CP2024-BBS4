@@ -22,7 +22,8 @@ let postsListener = null;
 let currentEditId = null;
 // ログイン中のユーザ
 let currentUser = null;
-
+//投稿数カウント処理
+let postnumber=0;
 // メッセージ表示処理
 function showMessage(message, type = 'success') {
     const messageArea = $('#messageArea');
@@ -77,6 +78,7 @@ function validateContent(content) {
         showMessage('投稿内容は1000文字以内で入力してください', 'error');
         return false;
     }
+  
     return true;
 }
 
@@ -121,6 +123,7 @@ function createPost(author, content) {
         .then(() => {
             showMessage('投稿が完了しました！');
             $('#contentInput').val('');
+            postnumber++;
             updateCharacterCount('contentInput', 'contentCount', 1000);
         })
         .catch((error) => {
@@ -142,6 +145,7 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
+}
 // タイムスタンプのフォーマット
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -307,6 +311,7 @@ function handleDelete() {
     postsRef.child(currentEditId).remove()
         .then(() => {
             showMessage('投稿を削除しました');
+            postnumber--;
             closeModal('deleteModal');
             currentEditId = null;
         })
@@ -529,11 +534,6 @@ window.addEventListener('unload', function() {
 
         <!-- 認証フォーム（未ログイン時表示） -->
         <div class="auth-container logged-out">
-          <!--div class="form-group">
-                <label for="loginEmail">ニックネーム</label>
-                <input type="uname" id="name" 
-                       class="form-control" placeholder="他の利用者も閲覧します">
-            </div-->
             <div class="form-group">
                 <label for="loginEmail">メールアドレス</label>
                 <input type="email" id="loginEmail" 
@@ -575,6 +575,7 @@ window.addEventListener('unload', function() {
         <!-- 投稿一覧 -->
         <div class="posts-container">
             <h2>投稿一覧</h2>
+            <h3>投稿数:件</h3>
             <div class="posts-control">
                 <select id="sortOrder" class="form-control">
                     <option value="newest">新しい順</option>

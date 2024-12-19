@@ -19,16 +19,6 @@ h1 {
     text-align: center;
 }
 
-/*名前エリア */
-/*#nameArea{
-   margin-bottom: 20px;
-}
-.name{
-  padding: 10px 15px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    animation: fadeIn 0.3s ease-in-out;
-}*/
 /* メッセージエリア */
 #messageArea {
     margin-bottom: 20px;
@@ -177,8 +167,8 @@ textarea.form-control {
 }
 
 .posts-container h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-size: 30px;
+    margin-bottom: 10px;
     color: #333;
 }
 
@@ -208,7 +198,7 @@ textarea.form-control {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
@@ -285,6 +275,7 @@ textarea.form-control {
     color: white;
     cursor: pointer;
 }
+
 
 .btn-delete:hover {
     background-color: #c82333;
