@@ -19,6 +19,16 @@ h1 {
     text-align: center;
 }
 
+/*名前エリア */
+/*#nameArea{
+   margin-bottom: 20px;
+}
+.name{
+  padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}*/
 /* メッセージエリア */
 #messageArea {
     margin-bottom: 20px;
@@ -63,10 +73,18 @@ label {
     color: #495057;
     font-weight: 500;
 }
+nform-control {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
 .form-control {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 5px;
     font-size: 16px;
     border: 1px solid #ced4da;
     border-radius: 4px;
@@ -79,6 +97,10 @@ label {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+textarea.nform-control {
+    min-height: 25px;
+    resize: vertical;
+}
 textarea.form-control {
     min-height: 100px;
     resize: vertical;

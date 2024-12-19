@@ -68,7 +68,10 @@ function updateCharacterCount(inputId, counterId, maxLength) {
 }
 
 // 投稿内容のバリデーション
-function validateContent(content) {
+function validateContent(content,username) {
+    if(!content || !content.trim()){
+        username='名無し';
+    }
     if (!content || !content.trim()) {
         showMessage('投稿内容を入力してください', 'error');
         return false;
@@ -120,8 +123,9 @@ function createPost(author, content) {
     postsRef.push(postData)
         .then(() => {
             showMessage('投稿が完了しました！');
+            $('#usernameInput').val('');
             $('#contentInput').val('');
-            updateCharacterCount('contentInput', 'contentCount', 1000);
+            updateCharacterCount('usernameInput','contentInput', 'contentCount', 1000);
         })
         .catch((error) => {
             showMessage('投稿に失敗しました：' + error.message, 'error');
@@ -185,6 +189,7 @@ function createPostElement(post) {
             </div>
             <div class="post-content">${escapeHtml(post.content)}</div>
             <div class="edit-form">
+                 <textarea class="nform-control" id="edit-${post.id}"></textarea>
                 <textarea class="form-control" id="edit-${post.id}"></textarea>
                 <div class="button-group">
                     <button class="btn-primary" onclick="updatePost('${post.id}')">
@@ -350,11 +355,14 @@ function cancelEdit(postId) {
 
 // 投稿の更新
 function updatePost(postId) {
+    const usernameVal=$(`#edit-${postId}`).val();
+    if (!validateContent(usernameVal)) return;
     const contentVal = $(`#edit-${postId}`).val();
     if (!validateContent(contentVal)) return;
 
     // content の内容を変更し、updatedAt フィールドを付加して、更新後の投稿内容を生成
     const updates = {
+      //  username:usernameVal,
         content: contentVal,
         updatedAt: firebase.database.ServerValue.TIMESTAMP
     };
@@ -477,15 +485,16 @@ $(function() {
 
    
     // 文字数カウンターの初期化
-    updateCharacterCount('contentInput', 'contentCount', 1000);
+    updateCharacterCount(
+        'contentInput', 'contentCount', 1000);
 
     // 投稿処理
     $('#postButton').on('click', function() {
         // 投稿内容をフォームから取得
         const authorVal = $('#authorInput').val();
-      //  const contentVal = $('#username').val();
+        const usernameVal = $('#usernameInput').val();
         const contentVal = $('#contentInput').val();
-        createPost(authorVal, username,contentVal);
+        createPost(authorVal, usernameInput,contentVal);
     });
 
     $('#loginButton').on('click', function() {
@@ -559,10 +568,10 @@ window.addEventListener('unload', function() {
         <!-- 投稿フォーム（ログイン時表示） -->
         <div class="post-form logged-in">
             <div class="form-group">
-                <label for="username">ニックネーム</label>
-                <textarea id="username" class="form-control" 
+                <label for="usernameInput">ニックネーム</label>
+                <textarea id="usernameInput" class="form-control" 
                           placeholder="ニックネームを入力してください"></textarea>
-                <small class="character-count" id="contentCount">0/50</small>
+                <!--small class="character-count" id="contentCount">0/50</small-->
             </div>
             <div class="form-group">
                 <label for="contentInput">投稿内容</label>
