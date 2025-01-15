@@ -142,7 +142,7 @@ function escapeHtml(str) {
 }
 
 // タイムスタンプのフォーマット
-function formatTimestamp(timestamp) {
+/*function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString('ja-JP', {
         year: 'numeric',
@@ -151,8 +151,16 @@ function formatTimestamp(timestamp) {
         hour: '2-digit',
         minute: '2-digit'
     });
+}*/
+function getRelativeTime(timestamp) { 
+    const date = new Date(timestamp);
+    const diff = Date.now() - timestamp; 
+    const minutes = Math.floor(diff / 60000); 
+    if (minutes < 1) return 'たった今'; 
+    if (minutes < 60) return `${minutes}分前`;
+     // ... 他の時間範囲の処理
+       
 }
-
 // 投稿の編集権限チェック
 function canEditPost(post) {
     return currentUser && post.userId === currentUser.uid;
@@ -196,11 +204,11 @@ function createPostElement(post) {
             </div>
             <div class="post-footer">
                 <span class="post-time">
-                    ${formatTimestamp(post.timestamp)}
+                    ${getRelativeTime(post.timestamp)}
                 </span>
                 ${post.updatedAt ? `
                     <span class="post-updated">
-                        (編集済み: ${formatTimestamp(post.updatedAt)})
+                        (編集済み: ${getRelativeTime(post.updatedAt)})
                     </span>
                 ` : ''}
             </div>
