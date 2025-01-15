@@ -22,8 +22,6 @@ let postsListener = null;
 let currentEditId = null;
 // ログイン中のユーザ
 let currentUser = null;
-//投稿数カウント処理
-let postnumber=0;
 // メッセージ表示処理
 function showMessage(message, type = 'success') {
     const messageArea = $('#messageArea');
@@ -78,7 +76,6 @@ function validateContent(content) {
         showMessage('投稿内容は1000文字以内で入力してください', 'error');
         return false;
     }
-  
     return true;
 }
 
@@ -123,7 +120,6 @@ function createPost(author, content) {
         .then(() => {
             showMessage('投稿が完了しました！');
             $('#contentInput').val('');
-            postnumber++;
             updateCharacterCount('contentInput', 'contentCount', 1000);
         })
         .catch((error) => {
@@ -145,7 +141,6 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
-}
 // タイムスタンプのフォーマット
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -189,7 +184,6 @@ function createPostElement(post) {
             </div>
             <div class="post-content">${escapeHtml(post.content)}</div>
             <div class="edit-form">
-                 <textarea class="nform-control" id="edit-${post.id}"></textarea>
                 <textarea class="form-control" id="edit-${post.id}"></textarea>
                 <div class="button-group">
                     <button class="btn-primary" onclick="updatePost('${post.id}')">
@@ -311,7 +305,6 @@ function handleDelete() {
     postsRef.child(currentEditId).remove()
         .then(() => {
             showMessage('投稿を削除しました');
-            postnumber--;
             closeModal('deleteModal');
             currentEditId = null;
         })
@@ -444,7 +437,6 @@ function logout() {
 
 // 認証フォームのクリア
 function clearAuthForm() {
-  //  $('#name').val('');
     $('#loginEmail').val('');
     $('#loginPassword').val('');
 }
@@ -481,17 +473,15 @@ $(function() {
         loadPosts();
      });
 
-   
     // 文字数カウンターの初期化
-    updateCharacterCount(
-        'contentInput', 'contentCount', 1000);
+    updateCharacterCount('contentInput', 'contentCount', 1000);
 
     // 投稿処理
     $('#postButton').on('click', function() {
         // 投稿内容をフォームから取得
         const authorVal = $('#authorInput').val();
         const contentVal = $('#contentInput').val();
-        createPost(authorVal,contentVal);
+        createPost(authorVal, contentVal);
     });
 
     $('#loginButton').on('click', function() {
@@ -502,9 +492,8 @@ $(function() {
 
     $('#registerButton').on('click', function() {
         const email = $('#loginEmail').val();
-        const uname = $('#name').val();
         const password = $('#loginPassword').val();
-        register(uname,email,password);
+        register(email, password);
     });
 
     $('#logoutButton').on('click', logout);
@@ -559,8 +548,6 @@ window.addEventListener('unload', function() {
 
         <!-- 投稿フォーム（ログイン時表示） -->
         <div class="post-form logged-in">
-
-            
             <div class="form-group">
                 <label for="contentInput">投稿内容</label>
                 <textarea id="contentInput" class="form-control" 
@@ -575,7 +562,6 @@ window.addEventListener('unload', function() {
         <!-- 投稿一覧 -->
         <div class="posts-container">
             <h2>投稿一覧</h2>
-            <h3>投稿数:件</h3>
             <div class="posts-control">
                 <select id="sortOrder" class="form-control">
                     <option value="newest">新しい順</option>
